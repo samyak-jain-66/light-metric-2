@@ -1,0 +1,39 @@
+<div class="container">
+  <div class="first">
+    <span style="font-weight: 700">{{
+      this?.data?.countryData?.name?.common
+    }}</span>
+    <span (click)="onClose()" style="cursor: pointer; font-size: 22px">x</span>
+  </div>
+  <div class="first" style="margin-top: 8px">
+    <img
+      [src]="this.data.countryData.flags?.png"
+      width="180px"
+      height="120px"
+    />
+  </div>
+  <div class="second" style="margin-top: 8px">
+    <span style="font-weight: 700">Capital</span>
+    <span>{{ this.data.countryData.capital[0] }}</span>
+  </div>
+  <div class="second" style="margin-top: 8px">
+    <span style="font-weight: 700">Continent</span>
+    <span>{{ this.data.countryData.region }}</span>
+  </div>
+  <div class="second" style="margin-top: 8px">
+    <span style="font-weight: 700">Currency</span>
+    <span>{{ this.data.currency }}</span>
+  </div>
+  <div class="second" style="margin-top: 8px">
+    <span style="font-weight: 700">Languages</span>
+    <span>{{ this.data.language }}</span>
+  </div>
+  <div class="second" style="margin-top: 8px">
+    <span style="font-weight: 700">Population</span>
+    <span>{{ this.data.countryData.population }}</span>
+  </div>
+  <div class="second" style="margin-top: 8px">
+    <span style="font-weight: 700">Timezone</span>
+    <span>{{ this.data.countryData.timezones[0] }}</span>
+  </div>
+</div>
