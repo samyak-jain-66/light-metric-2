@@ -26,6 +26,9 @@
       </div>
     </div>
   </div>
+  <div class="main" *ngIf="error" style="margin-top: 160px">
+    <h1>No Solutions Found....</h1>
+  </div>
   <div class="main">
     <div class="country" *ngIf="!isLoading">
       <div

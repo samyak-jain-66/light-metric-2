@@ -27,6 +27,7 @@ export class AppComponent implements OnInit, AfterViewInit, OnDestroy {
   searchCountry: string = '';
   searchDisplay: any = [];
   isLoading: boolean = false;
+  error: any;
 
   @ViewChild('searchBox', { read: ElementRef }) searchBox!: ElementRef;
 
@@ -37,18 +38,25 @@ export class AppComponent implements OnInit, AfterViewInit, OnDestroy {
   }
 
   async getCountry() {
-    const get$ = this.http.get('https://restcountries.com/v3.1/all');
-    const res = await lastValueFrom(get$);
-    console.log(res);
-    if (res) {
-      this.getAllCountry = res;
-      this.getAllCountry.sort((a: any, b: any) =>
-        a.name.common.localeCompare(b.name.common)
-      );
-      console.log(this.getAllCountry);
-      for (let i = 0; i < 8; i++) {
-        this.intitialCOuntryDisplay.push(this.getAllCountry[i]);
+    this.isLoading = true;
+    try {
+      this.error = false;
+      const get$ = this.http.get('https://restcountries.com/v3.1/all');
+      const res = await lastValueFrom(get$);
+      console.log(res);
+      if (res) {
+        this.getAllCountry = res;
+        this.getAllCountry.sort((a: any, b: any) =>
+          a.name.common.localeCompare(b.name.common)
+        );
+        this.isLoading = false;
+        for (let i = 0; i < 8; i++) {
+          this.intitialCOuntryDisplay.push(this.getAllCountry[i]);
+        }
       }
+    } catch (e: any) {
+      this.isLoading = false;
+      this.error = true;
     }
   }
   addMore() {
@@ -64,14 +72,15 @@ export class AppComponent implements OnInit, AfterViewInit, OnDestroy {
   }
 
   countryView(countryData: any) {
-    // const currency =
-    //   countryData.currency[Object.keys(countryData.currencies)?.[0]];
-    // const language = Object.keys(countryData.languages)?.[0];
+    const currency =
+      countryData.currencies[Object.keys(countryData.currencies)?.[0]].name;
+    const language =
+      countryData.languages[Object.keys(countryData.languages)?.[0]];
     const dialogRef = this.dialog.open(CountryModalComponent, {
       data: {
         countryData: countryData,
-        // currency: currency,
-        // language: language,
+        currency: currency,
+        language: language,
       },
       width: '420px',
       height: '400px',
@@ -96,6 +105,7 @@ export class AppComponent implements OnInit, AfterViewInit, OnDestroy {
       .subscribe(async (res) => {
         if (res && res.length >= 1) {
           this.isLoading = true;
+          this.error = false;
           this.handleSearch(res);
         } else {
           if (res.length < 1) {
@@ -110,17 +120,22 @@ export class AppComponent implements OnInit, AfterViewInit, OnDestroy {
     if (this.searchDisplay.length > 0) {
       this.searchDisplay.splice(0);
     }
-    const get$ = this.http.get(
-      `https://restcountries.com/v3.1/name/${searchValue}`
-    );
-    const res = await lastValueFrom(get$);
-    if (res) {
-      console.log(res);
-      this.isLoading = false;
-      this.searchDisplay = res;
-      this.searchDisplay.sort((a: any, b: any) =>
-        a.name.common.localeCompare(b.name.common)
+    try {
+      const get$ = this.http.get(
+        `https://restcountries.com/v3.1/name/${searchValue}`
       );
+      const res = await lastValueFrom(get$);
+      if (res) {
+        console.log(res);
+        this.isLoading = false;
+        this.searchDisplay = res;
+        this.searchDisplay.sort((a: any, b: any) =>
+          a.name.common.localeCompare(b.name.common)
+        );
+      }
+    } catch (e: any) {
+      this.isLoading = false;
+      this.error = true;
     }
   }
 }
