@@ -15,7 +15,7 @@
     <div class="search">
       <input
         type="text"
-        style="width: 980px; padding: 8px"
+        style="width: 85%; padding: 8px"
         matInput
         #searchBox
         [(ngModel)]="searchCountry"
@@ -26,6 +26,7 @@
       </div>
     </div>
   </div>
+
   <div class="main" *ngIf="error" style="margin-top: 160px">
     <h1>No Solutions Found....</h1>
   </div>
@@ -83,7 +84,12 @@
     <div class="footer-container">
       <img [src]="logo" />
       <div class="right-footer">
-        <input type="text" placeholder="Enter Email" style="padding: 6px" />
+        <input
+          type="text"
+          placeholder="Enter Email"
+          class="footer__input"
+          style="padding: 6px"
+        />
         <div class="btn-footer" style="border-radius: 4px">
           <span>Subscribe</span>
         </div>
